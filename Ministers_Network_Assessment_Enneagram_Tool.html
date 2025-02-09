@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ministers Network Assessment Enneagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        .container { max-width: 700px; margin: auto; padding: 20px; }
+        input { width: 100%; padding: 8px; margin: 10px 0; }
+        button { padding: 10px; margin: 10px; cursor: pointer; }
+        canvas { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ministers Network Assessment Enneagram</h2>
+        <p>Enter your scores below to assess your spiritual and leadership alignment.</p>
+
+        <label>Biblical Mental Health Rails (1-10)</label>
+        <input type="number" id="mentalHealth" min="1" max="10">
+
+        <label>Character Rails (1-10)</label>
+        <input type="number" id="character" min="1" max="10">
+
+        <label>Doctrinal Rails (1-10)</label>
+        <input type="number" id="doctrinal" min="1" max="10">
+
+        <label>Spiritual Rails (1-10)</label>
+        <input type="number" id="spiritual" min="1" max="10">
+
+        <label>Relational Rails (1-10)</label>
+        <input type="number" id="relational" min="1" max="10">
+
+        <label>Revelatory Rails (1-10)</label>
+        <input type="number" id="revelatory" min="1" max="10">
+
+        <label>Presbytery Rails (1-10)</label>
+        <input type="number" id="presbytery" min="1" max="10">
+
+        <label>Family Rails Order (1-5)</label>
+        <input type="number" id="familyOrder" min="1" max="5">
+
+        <label>Spiritual Discipline Rails (1-5)</label>
+        <input type="number" id="spiritualDiscipline" min="1" max="5">
+
+        <label>Physical Rails (1-5)</label>
+        <input type="number" id="physical" min="1" max="5">
+
+        <button onclick="generateReport()">Generate Report</button>
+        <canvas id="enneagramChart" width="400" height="400"></canvas>
+    </div>
+
+    <script>
+        function generateReport() {
+            const scores = {
+                mentalHealth: parseInt(document.getElementById('mentalHealth').value) || 0,
+                character: parseInt(document.getElementById('character').value) || 0,
+                doctrinal: parseInt(document.getElementById('doctrinal').value) || 0,
+                spiritual: parseInt(document.getElementById('spiritual').value) || 0,
+                relational: parseInt(document.getElementById('relational').value) || 0,
+                revelatory: parseInt(document.getElementById('revelatory').value) || 0,
+                presbytery: parseInt(document.getElementById('presbytery').value) || 0,
+                familyOrder: parseInt(document.getElementById('familyOrder').value) || 0,
+                spiritualDiscipline: parseInt(document.getElementById('spiritualDiscipline').value) || 0,
+                physical: parseInt(document.getElementById('physical').value) || 0
+            };
+
+            const totalStrength = scores.mentalHealth + scores.character + scores.doctrinal + scores.spiritual + 
+                                  scores.relational + scores.revelatory + scores.presbytery;
+            const totalOrder = scores.familyOrder + scores.spiritualDiscipline + scores.physical;
+            const totalScore = totalStrength + totalOrder;
+
+            const ctx = document.getElementById('enneagramChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Mental Health', 'Character', 'Doctrinal', 'Spiritual', 'Relational', 
+                             'Revelatory', 'Presbytery', 'Family Order', 'Spiritual Discipline', 'Physical'],
+                    datasets: [{
+                        label: 'Your Assessment',
+                        data: Object.values(scores),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        pointBackgroundColor: 'rgb(54, 162, 235)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+
+            let interpretation = '';
+            if (totalScore <= 33) interpretation = 'Weak: Significant growth needed in multiple areas.';
+            else if (totalScore <= 66) interpretation = 'Moderate: Balanced but requires attention in specific areas.';
+            else interpretation = 'Healthy: Strong alignment and maturity in most areas.';
+
+            alert(`Your Total Score: ${totalScore} (Maximum: 80)
+
+${interpretation}`);
+        }
+    </script>
+</body>
+</html>
